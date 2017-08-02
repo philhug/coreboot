@@ -41,6 +41,7 @@ void pilot_enable_serial(pnp_devfn_t dev, u16 iobase)
 	pnp_enter_ext_func_mode(dev);
 	pnp_set_logical_device(dev);
 	pnp_set_iobase(dev, PNP_IDX_IO0, iobase);
+	pnp_set_irq(dev, PNP_IDX_IRQ0, 3);
 	pnp_set_enable(dev, 1);
 	pnp_exit_ext_func_mode(dev);
 }
