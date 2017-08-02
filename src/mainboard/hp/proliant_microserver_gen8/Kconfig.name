@@ -1,0 +1,2 @@
+config BOARD_HP_PROLIANT_MICROSERVER_GEN8
+	bool "ProLiant MicroServer Gen8"
