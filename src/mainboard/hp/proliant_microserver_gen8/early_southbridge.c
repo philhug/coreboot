@@ -34,7 +34,7 @@ void rcba_config(void)
 {
 	/* Disable devices.  */
 	RCBA32(0x3414) = 0x00000020;
-	RCBA32(0x3418) = 0x1f2e1ff9;
+	//RCBA32(0x3418) = 0x1f2e1ff9;
 
 }
 const struct southbridge_usb_port mainboard_usb_ports[] = {
