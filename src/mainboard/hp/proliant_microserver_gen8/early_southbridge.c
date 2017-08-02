@@ -13,8 +13,11 @@
 #include "northbridge/intel/sandybridge/raminit_native.h"
 #include "southbridge/intel/bd82x6x/pch.h"
 #include <southbridge/intel/common/gpio.h>
+#include <superio/serverengines/pilot/pilot.h>
 #include <arch/cpu.h>
 #include <cpu/x86/msr.h>
+
+#define SERIAL_DEV PNP_DEV(0x2e, PILOT_SP1)
 
 void pch_enable_lpc(void)
 {
@@ -57,6 +60,7 @@ void mainboard_early_init(int s3resume)
 
 void mainboard_config_superio(void)
 {
+	pilot_early_init(SERIAL_DEV); //config port is being taken from SERIAL_DEV
 }
 
 /* FIXME: Put proper SPD map here. */
