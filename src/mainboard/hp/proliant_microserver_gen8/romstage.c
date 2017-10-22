@@ -34,9 +34,9 @@ void mainboard_get_spd(spd_raw_data *spd, bool id_only)
         if (spd_file_len < 256)
                 die("Missing SPD data.");
 
-	memcpy(&spd[0], spd_file, 256);
+	//memcpy(&spd[0], spd_file, 256);
 	memcpy(&spd[1], spd_file, 256);
-	memcpy(&spd[2], spd_file, 256);
-	memcpy(&spd[3], spd_file, 256);
+	//memcpy(&spd[2], spd_file, 256);
+	//memcpy(&spd[3], spd_file, 256);
 }
 
