@@ -707,16 +707,21 @@ static void migrate_ehci_debug(int is_recovery)
 {
 	struct ehci_debug_info *dbg_info_cbmem;
 	int rv;
+	printk(BIOS_ERR, "migrate ehci debug\n");
 
 	if (ENV_ROMSTAGE) {
 		/* Move state from CAR to CBMEM. */
 		struct ehci_debug_info *dbg_info = dbgp_ehci_info();
 		dbg_info_cbmem = cbmem_add(CBMEM_ID_EHCI_DEBUG,
 					sizeof(*dbg_info));
-		if (dbg_info_cbmem == NULL)
+		printk(BIOS_ERR, "migrate ehci debug 1\n");
+		if (dbg_info_cbmem == NULL) {
+			printk(BIOS_ERR, "migrate ehci debug 2\n");
 			return;
+		}
 		memcpy(dbg_info_cbmem, dbg_info, sizeof(*dbg_info));
 		car_set_var(glob_dbg_info_p, dbg_info_cbmem);
+		printk(BIOS_ERR, "migrate ehci debug 3\n");
 		return;
 	}
 

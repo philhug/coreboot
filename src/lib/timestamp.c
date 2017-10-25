@@ -229,13 +229,16 @@ void timestamp_init(uint64_t base)
 
 static void timestamp_sync_cache_to_cbmem(int is_recovery)
 {
+	printk(BIOS_ERR, "timestamp sync\n");
 	uint32_t i;
 	struct timestamp_cache *ts_cache;
 	struct timestamp_table *ts_cache_table;
 	struct timestamp_table *ts_cbmem_table = NULL;
 
-	if (!timestamp_should_run())
+	if (!timestamp_should_run()) {
+		printk(BIOS_ERR, "timestamp sync no run\n");
 		return;
+	}
 
 	ts_cache = timestamp_cache_get();
 
@@ -306,6 +309,7 @@ static void timestamp_sync_cache_to_cbmem(int is_recovery)
 	/* Cache no longer required. */
 	ts_cache_table->num_entries = 0;
 	ts_cache->cache_state = TIMESTAMP_CACHE_NOT_NEEDED;
+	printk(BIOS_ERR, "timestamp sync done\n");
 }
 
 void timestamp_rescale_table(uint16_t N, uint16_t M)

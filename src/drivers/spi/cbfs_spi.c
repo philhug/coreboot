@@ -102,10 +102,12 @@ static void switch_to_postram_cache(int unused)
 	 * backing mdev with postram cache. This prevents the mdev backing from
 	 * being overwritten if spi_flash was not accessed before dram was up.
 	 */
+	printk(BIOS_ERR, "postram cache\n");
 	boot_device_init();
 	if (_preram_cbfs_cache != _postram_cbfs_cache)
 		mmap_helper_device_init(&mdev, _postram_cbfs_cache,
 					REGION_SIZE(postram_cbfs_cache));
+	printk(BIOS_ERR, "postram cache end\n");
 }
 ROMSTAGE_CBMEM_INIT_HOOK(switch_to_postram_cache);
 

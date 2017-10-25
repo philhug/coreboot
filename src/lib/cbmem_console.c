@@ -172,6 +172,7 @@ static void copy_console_buffer(struct cbmem_console *src_cons_p)
 
 static void cbmemc_reinit(int is_recovery)
 {
+	printk(BIOS_ERR, "cbmemc_reinit\n");
 	const size_t size = CONFIG_CONSOLE_CBMEM_BUFFER_SIZE;
 	/* If CBMEM entry already existed, old contents are not altered. */
 	struct cbmem_console *cbmem_cons_p = cbmem_add(CBMEM_ID_CONSOLE, size);
@@ -179,6 +180,7 @@ static void cbmemc_reinit(int is_recovery)
 
 	init_console_ptr(cbmem_cons_p, size);
 	copy_console_buffer(previous_cons_p);
+	printk(BIOS_ERR, "cbmemc_reinit done\n");
 }
 ROMSTAGE_CBMEM_INIT_HOOK(cbmemc_reinit)
 RAMSTAGE_CBMEM_INIT_HOOK(cbmemc_reinit)

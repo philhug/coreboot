@@ -123,21 +123,27 @@ static void do_car_migrate_variables(void)
 	void *migrated_base;
 	size_t car_size = car_data_size();
 
+	printk(BIOS_ERR, "Migrating...\n");
 	/* Check if already migrated. */
-	if (car_migrated)
+	if (car_migrated) {
+		printk(BIOS_ERR, "Migrating already done\n");
 		return;
+	}
 
 	migrated_base = cbmem_add(CBMEM_ID_CAR_GLOBALS, car_size);
+	printk(BIOS_ERR, "base: %p", migrated_base);
 
 	if (migrated_base == NULL) {
 		printk(BIOS_ERR, "Could not migrate CAR data!\n");
 		return;
 	}
 
+	printk(BIOS_ERR, "base: %p _car_relocatable_data_start %p car_size %lu", migrated_base, _car_relocatable_data_start, car_size);
 	memcpy(migrated_base, _car_relocatable_data_start, car_size);
 
 	/* Mark that the data has been moved. */
 	car_migrated = ~0;
+	printk(BIOS_ERR, "Migrating... done\n");
 }
 
 static void car_migrate_variables(int is_recovery)

@@ -172,10 +172,12 @@ void stage_cache_load_stage(int stage_id, struct prog *stage)
 
 static void stage_cache_setup(int is_recovery)
 {
+	printk(BIOS_ERR, "stage cache setup\n");
 	if (is_recovery)
 		stage_cache_recover();
 	else
 		stage_cache_create_empty();
+	printk(BIOS_ERR, "stage cache setup done\n");
 }
 
 ROMSTAGE_CBMEM_INIT_HOOK(stage_cache_setup)
