@@ -428,7 +428,10 @@ static void init_dram_ddr3(int min_tck, int s3resume)
                 const size_t endk = (tseg_base & 0xfff00000) >> 10;
 
                 for (size_t basek = 0; basek < endk; basek += stepk)
-                        ram_check(basek << 10, (basek + (1 << 10)) << 10);
+			if (!(basek << 10))
+				continue;
+			else
+				ram_check(basek << 10, (basek + (1 << 10)) << 10);
 
 	} else {
 		/* Non intrusive, fast ram check */
