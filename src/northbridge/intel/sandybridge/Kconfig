@@ -124,6 +124,13 @@ config MRC_FILE
 	  The path and filename of the file to use as System Agent
 	  binary.
 
+config RAMINIT_EXTENDED_MEMTEST
+	bool "Run extended memtest on raminit"
+	default n
+	help
+	  Run extended memtest over all usable memory below 4GiB.
+	  This will delay raminit training by several seconds.
+
 endif # !USE_NATIVE_RAMINIT
 
 endif

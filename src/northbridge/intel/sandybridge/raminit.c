@@ -419,8 +419,21 @@ static void init_dram_ddr3(int min_tck, int s3resume)
 	/* Zone config */
 	dram_zones(&ctrl, 0);
 
-	/* Non intrusive, fast ram check */
-	quick_ram_check();
+	if (!s3resume) {
+		/* TODO: use PAE */
+                /* Test memory below 4GiB */
+                const size_t stepk = IS_ENABLED(CONFIG_RAMINIT_EXTENDED_MEMTEST)
+                        ? (64 << 10) : (4 << 10);
+                const u32 tseg_base = pci_read_config32(PCI_DEV(0, 0, 0), 0xb8);
+                const size_t endk = (tseg_base & 0xfff00000) >> 10;
+
+                for (size_t basek = 0; basek < endk; basek += stepk)
+                        ram_check(basek << 10, (basek + (1 << 10)) << 10);
+
+	} else {
+		/* Non intrusive, fast ram check */
+		quick_ram_check();
+	}
 
 	intel_early_me_status();
 	intel_early_me_init_done(ME_INIT_STATUS_SUCCESS);
