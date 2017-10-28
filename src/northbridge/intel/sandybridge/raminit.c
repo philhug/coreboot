@@ -171,6 +171,7 @@ static void dram_find_spds_ddr3(spd_raw_data *spd, ramctr_timing *ctrl)
 {
 	int dimms = 0, dimms_on_channel;
 	int channel, slot, spd_slot;
+	size_t supports_ecc = 1;
 	dimm_info *dimm = &ctrl->info;
 
 	memset (ctrl->rankmap, 0, sizeof(ctrl->rankmap));
@@ -238,6 +239,9 @@ static void dram_find_spds_ddr3(spd_raw_data *spd, ramctr_timing *ctrl)
 			ctrl->rank_mirror[channel][slot * 2 + 1] = dimm->dimm[channel][slot].flags.pins_mirrored;
 			ctrl->channel_size_mb[channel] += dimm->dimm[channel][slot].size_mb;
 
+			if (!dimm->dimm[channel][slot].flags.is_ecc)
+				supports_ecc = 0;
+
 			ctrl->auto_self_refresh &= dimm->dimm[channel][slot].flags.asr;
 			ctrl->extended_temperature_range &= dimm->dimm[channel][slot].flags.ext_temp_refresh;
 
@@ -260,6 +264,19 @@ static void dram_find_spds_ddr3(spd_raw_data *spd, ramctr_timing *ctrl)
 		} else
 			ctrl->ref_card_offset[channel] = 0;
 	}
+
+	if (ctrl->ecc_supported) {
+		if (ctrl->ecc_forced && !supports_ecc)
+			die("ECC mode forced but non ECC DIMM installed !");
+
+		if (ctrl->ecc_forced ||
+		    (IS_ENABLED(CONFIG_RAMINIT_ENABLE_ECC) && supports_ecc))
+			ctrl->ecc_enabled = 1;
+	}
+	printk(BIOS_DEBUG, "ECC is %s\n",
+			ctrl->ecc_enabled  ? "enabled" : "disabled");
+
+	ctrl->lanes = ctrl->ecc_enabled ? 9 : 8;
 
 	if (!dimms)
 		die("No DIMMs were found");

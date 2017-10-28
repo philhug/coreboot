@@ -101,6 +101,12 @@ config DCACHE_RAM_MRC_VAR_SIZE
 	hex
 	default 0x0
 
+config RAMINIT_ENABLE_ECC
+	bool "Enable ECC if supported"
+	default y
+	help
+	  Enable ECC if supported by both, host and RAM.
+
 config RAMINIT_EXTENDED_MEMTEST
 	bool "Run extended memtest on raminit"
 	default n
