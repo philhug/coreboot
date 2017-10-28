@@ -66,7 +66,6 @@ void pilot_early_init(pnp_devfn_t dev)
 
 	pnp_enter_ext_func_mode(dev);
 	pnp_set_logical_device(PNP_DEV(port, 0x6));
-	//pnp_set_logical_device(PNP_DEV(port, 0x1));
 	pnp_set_enable(dev, 0);
 	pnp_set_iobase(dev, PNP_IDX_IO0, 0x60);
 	pnp_set_iobase(dev, PNP_IDX_IO1, 0x64);
