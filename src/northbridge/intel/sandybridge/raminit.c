@@ -374,6 +374,13 @@ static void init_dram_ddr3(int min_tck, int s3resume)
 		cpu = cpu_get_cpuid();
 		ctrl.sandybridge = IS_SANDY_CPU(cpu);
 
+		/* Get ECC support and mode */
+		ctrl.ecc_supported = get_host_ecc_cap();
+		ctrl.ecc_forced = ctrl.ecc_supported ? get_host_ecc_mode() : 0;
+		printk(BIOS_DEBUG, "ECC supported: %s ECC forced: %s\n",
+				ctrl.ecc_supported ? "yes" : "no",
+				ctrl.ecc_forced ? "yes" : "no");
+
 		/* Get DDR3 SPD data */
 		memset(spds, 0, sizeof(spds));
 		mainboard_get_spd(spds, 0);
@@ -394,6 +401,13 @@ static void init_dram_ddr3(int min_tck, int s3resume)
 		/* Get architecture */
 		cpu = cpu_get_cpuid();
 		ctrl.sandybridge = IS_SANDY_CPU(cpu);
+
+		/* Get ECC support and mode */
+		ctrl.ecc_supported = get_host_ecc_cap();
+		ctrl.ecc_forced = ctrl.ecc_supported ? get_host_ecc_mode() : 0;
+		printk(BIOS_DEBUG, "ECC supported: %s ECC forced: %s\n",
+				ctrl.ecc_supported ? "yes" : "no",
+				ctrl.ecc_forced ? "yes" : "no");
 
 		/* Reset DDR3 frequency */
 		dram_find_spds_ddr3(spds, &ctrl);

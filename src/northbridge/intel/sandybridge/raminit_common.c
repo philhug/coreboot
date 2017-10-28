@@ -461,6 +461,30 @@ static unsigned int get_mmio_size(void)
 		return cfg->pci_mmio_size;
 }
 
+/*
+ * Returns the ECC capability.
+ * Return 0: ECC isn't supported
+ * Return 1: ECC is supported
+ */
+size_t get_host_ecc_cap(void)
+{
+	/* read Capabilities A Register */
+	const u32 reg32 = pci_read_config32(PCI_DEV(0, 0, 0), CAPID0_A);
+	return !!(reg32 & (1 << 25));
+}
+
+/*
+ * Returns the ECC mode the NB is running at.
+ * Return 0: ECC is optional
+ * Return 1: ECC is enabled and can't be disabled
+ */
+size_t get_host_ecc_mode(void)
+{
+	/* read Capabilities A Register */
+	const u32 reg32 = pci_read_config32(PCI_DEV(0, 0, 0), CAPID0_A);
+	return !!(reg32 & (1 << 24));
+}
+
 void dram_memorymap(ramctr_timing * ctrl, int me_uma_size)
 {
 	u32 reg, val, reclaim;

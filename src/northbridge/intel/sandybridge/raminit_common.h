@@ -120,6 +120,8 @@ typedef struct ramctr_timing_st {
 	int reg_c14_offset;
 	int reg_320c_range_threshold;
 
+	int ecc_supported;
+	int ecc_forced;
 	int edge_offset[3];
 	int timC_offset[3];
 
@@ -187,5 +189,8 @@ int try_init_dram_ddr3_sandy(ramctr_timing *ctrl, int fast_boot,
 
 int try_init_dram_ddr3_ivy(ramctr_timing *ctrl, int fast_boot,
 		int s3_resume, int me_uma_size);
+
+size_t get_host_ecc_cap(void);
+size_t get_host_ecc_mode(void);
 
 #endif
