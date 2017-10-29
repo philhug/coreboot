@@ -50,6 +50,10 @@ config MAX_CPUS
 	int
 	default 8
 
+config UART_FOR_CONSOLE
+    int
+    default 1
+
 config USBDEBUG_HCD_INDEX # FIXME: check this
 	int
 	default 2
