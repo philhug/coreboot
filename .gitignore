@@ -109,6 +109,7 @@ util/intelmetool/intelmetool
 util/inteltool/.dependencies
 util/inteltool/inteltool
 util/intelvbttool/intelvbttool
+util/fuzz-tests/jpeg-test
 util/k8resdump/k8resdump
 util/lbtdump/lbtdump
 util/mptable/mptable
