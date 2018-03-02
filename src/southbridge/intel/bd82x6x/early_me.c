@@ -250,8 +250,8 @@ int intel_early_me_init_done(u8 status)
 		return 0;
 	case ME_HFS_ACK_RESET:
 		/* Non-power cycle reset */
-		set_global_reset(0);
-		reset |= 0x06;
+		printk(BIOS_WARNING, "Fuck you ME, I'm not going to reset, going to continue to boot. Reset = 0x%x.\n", reset);
+		reset = 0;
 		break;
 	case ME_HFS_ACK_PWR_CYCLE:
 		/* Power cycle reset */
