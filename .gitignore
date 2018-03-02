@@ -137,3 +137,8 @@ Documentation/*.pdf
 Documentation/_build
 
 doxygen/*
+
+config*
+.config*
+*.config
+
