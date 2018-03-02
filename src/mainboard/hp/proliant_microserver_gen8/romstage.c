@@ -23,7 +23,7 @@
 
 void mainboard_get_spd(spd_raw_data *spd, bool id_only)
 {
-     /*   uint8_t *spd_file;
+        uint8_t *spd_file;
         size_t spd_file_len;
 
         spd_file = cbfs_boot_map_with_leak("spd.bin", CBFS_TYPE_SPD,
@@ -38,12 +38,11 @@ void mainboard_get_spd(spd_raw_data *spd, bool id_only)
 	memcpy(&spd[1], spd_file, 256);
 	//memcpy(&spd[2], spd_file, 256);
 	//memcpy(&spd[3], spd_file, 256);
-    */
 
-	read_spd (&spd[0], 0x50, id_only);
-	read_spd (&spd[1], 0x51, id_only);
-	read_spd (&spd[2], 0x52, id_only);
-	read_spd (&spd[3], 0x53, id_only);
-
+/* try to read it from the bus */
+//read_spd (&spd[0], 0x50, id_only);
+//read_spd (&spd[1], 0x51, id_only);
+//read_spd (&spd[2], 0x52, id_only);
+//read_spd (&spd[3], 0x53, id_only);
 }
 

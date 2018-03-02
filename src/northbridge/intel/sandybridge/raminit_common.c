@@ -491,7 +491,7 @@ size_t get_host_ecc_mode(void)
 {
 	/* read Capabilities A Register */
 	const u32 reg32 = pci_read_config32(PCI_DEV(0, 0, 0), CAPID0_A);
-	return !!(reg32 & (1 << 24));
+	return reg32 & (1 << 24);
 }
 
 void dram_memorymap(ramctr_timing * ctrl, int me_uma_size)

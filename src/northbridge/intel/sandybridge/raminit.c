@@ -392,8 +392,9 @@ static void init_dram_ddr3(int min_tck, int s3resume)
 		ctrl.sandybridge = IS_SANDY_CPU(cpu);
 
 		/* Get ECC support and mode */
-		ctrl.ecc_supported = get_host_ecc_cap();
-		ctrl.ecc_forced = ctrl.ecc_supported ? get_host_ecc_mode() : 0;
+		ctrl.ecc_forced = get_host_ecc_mode();
+		ctrl.ecc_supported = ctrl.ecc_forced || get_host_ecc_cap();
+		printk(BIOS_DEBUG, "capid0_A: 0x%08x\n", pci_read_config32(PCI_DEV(0, 0, 0), CAPID0_A));
 		printk(BIOS_DEBUG, "ECC supported: %s ECC forced: %s\n",
 				ctrl.ecc_supported ? "yes" : "no",
 				ctrl.ecc_forced ? "yes" : "no");
