@@ -86,6 +86,10 @@ util/amdfwtool/amdfwtool
 util/archive/archive
 util/bimgtool/bimgtool
 util/bincfg/bincfg
+util/blobtool/blobtool
+util/blobtool/blobtool.lex.c
+util/blobtool/blobtool.tab.c
+util/blobtool/blobtool.tab.h
 util/board_status/board-status
 util/bucts/bucts
 util/cbfstool/cbfs-compression-tool
