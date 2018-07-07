@@ -16,9 +16,17 @@
 #include <arch/io.h>
 #include <bootblock_common.h>
 #include <console/console.h>
+#include <console/uart.h>
 #include <soc/addressmap.h>
 
 void bootblock_soc_init(void)
 {
 	printk(BIOS_INFO, "Boot mode: %d\n", read32((uint32_t *)FU540_MSEL));
+}
+
+void bootblock_soc_early_init(void)
+{
+#if (IS_ENABLED(CONFIG_CONSOLE_SERIAL))
+        uart_init(CONFIG_UART_FOR_CONSOLE);
+#endif
 }
