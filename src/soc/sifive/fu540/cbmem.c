@@ -14,9 +14,14 @@
  */
 
 #include <cbmem.h>
+#include <console/console.h>
+#include <soc/addressmap.h>
+#include <soc/sdram.h>
+#include <symbols.h>
+#include <stdlib.h>
 
 void *cbmem_top(void)
 {
-	/* dummy value */
-	return (void *)(4ULL * GiB);
+	return (void *)min((uintptr_t)_dram + sdram_size_mb() * MiB,
+	                   FU540_MAXDRAM);
 }

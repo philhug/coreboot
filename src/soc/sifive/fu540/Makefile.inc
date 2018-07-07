@@ -22,6 +22,7 @@ romstage-y += uart.c
 romstage-y += media.c
 romstage-y += sdram.c
 romstage-y += otp.c
+romstage-y += cbmem.c
 
 ramstage-y += uart.c
 ramstage-y += media.c
