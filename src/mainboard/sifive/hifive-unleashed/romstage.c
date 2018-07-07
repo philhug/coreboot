@@ -13,14 +13,42 @@
  * GNU General Public License for more details.
  */
 
+#include <cbmem.h>
 #include <console/console.h>
+#include <console/uart.h>
 #include <program_loading.h>
+#include <soc/clock.h>
+#include <soc/otp.h>
+#include <soc/sdram.h>
 
 void main(void)
 {
 	console_init();
 
+
+	//printk(BIOS_INFO, "Serial: %d\n", otp_read_serial());
+	printk(BIOS_INFO, "CLK: %d\n", clock_get_coreclk_khz());
+
 	/* TODO: Follow Section 6.3 (FSBL) of the FU540 manual */
+
+	printk(BIOS_INFO, "before clock init\n");
+	#if (IS_ENABLED(CONFIG_CONSOLE_SERIAL))
+		uart_tx_flush(CONFIG_UART_FOR_CONSOLE);
+	#endif
+
+	clock_init();
+
+	// re-initialize UART
+	#if (IS_ENABLED(CONFIG_CONSOLE_SERIAL))
+		uart_init(CONFIG_UART_FOR_CONSOLE);
+	#endif
+	printk(BIOS_INFO, "Clock init done\n");
+
+	printk(BIOS_INFO, "CLK: %d\n", clock_get_coreclk_khz());
+	sdram_init();
+	printk(BIOS_INFO, "SDRAM INIT done \n");
+
+	cbmem_initialize_empty();
 
 	run_ramstage();
 }

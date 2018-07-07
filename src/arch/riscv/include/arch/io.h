@@ -14,6 +14,7 @@
 #ifndef _ASM_IO_H
 #define _ASM_IO_H
 
+#include <endian.h>
 #include <stdint.h>
 
 static inline __attribute__((always_inline)) uint8_t read8(const volatile void *addr)
