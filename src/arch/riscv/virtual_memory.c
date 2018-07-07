@@ -14,9 +14,31 @@
  * GNU General Public License for more details.
  */
 
+#include <assert.h>
 #include <arch/encoding.h>
 #include <stdint.h>
 #include <vm.h>
+
+// Delegate supervisor timer and other interrupts to supervisor mode.
+static void delegate_traps(void)
+{
+  if (!supports_extension('S'))
+    return;
+
+  uintptr_t interrupts = MIP_SSIP | MIP_STIP | MIP_SEIP;
+  uintptr_t exceptions =
+    (1U << CAUSE_MISALIGNED_FETCH) |
+    (1U << CAUSE_FETCH_PAGE_FAULT) |
+    (1U << CAUSE_BREAKPOINT) |
+    (1U << CAUSE_LOAD_PAGE_FAULT) |
+    (1U << CAUSE_STORE_PAGE_FAULT) |
+    (1U << CAUSE_USER_ECALL);
+
+  write_csr(mideleg, interrupts);
+  write_csr(medeleg, exceptions);
+  assert(read_csr(mideleg) == interrupts);
+  assert(read_csr(medeleg) == exceptions);
+}
 
 /* Delegate controls which traps are delegated to the payload. If you
  * wish to temporarily disable some or all delegation you can, in a
@@ -24,6 +46,7 @@
  * to M-mode). In practice, this variable has been a lifesaver.  It is
  * still not quite determined which delegation might by unallowed by
  * the spec so for now we enumerate and set them all. */
+/*
 static int delegate = 0
 	| (1 << CAUSE_MISALIGNED_FETCH)
 	| (1 << CAUSE_FETCH_ACCESS)
@@ -36,7 +59,7 @@ static int delegate = 0
 	| (1 << CAUSE_LOAD_PAGE_FAULT)
 	| (1 << CAUSE_STORE_PAGE_FAULT)
 	;
-
+*/
 void mstatus_init(void)
 {
 	uintptr_t ms = 0;
@@ -52,11 +75,10 @@ void mstatus_init(void)
 	// all other supervisor interrupts.
 	set_csr(mie, MIP_MTIP | MIP_STIP | MIP_SSIP);
 
-	// Delegate supervisor timer and other interrupts
-	// to supervisor mode.
-	set_csr(mideleg,  MIP_STIP | MIP_SSIP);
+	delegate_traps();
+	//set_csr(mideleg,  MIP_STIP | MIP_SSIP);
 
-	set_csr(medeleg, delegate);
+	//set_csr(medeleg, delegate);
 
 	// Enable all user/supervisor-mode counters using
 	// v1.10 register addresses.
