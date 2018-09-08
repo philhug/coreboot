@@ -99,6 +99,9 @@ static struct prci_ctlr *prci = (void *)FU540_PRCI;
 // 33.33 Mhz after reset
 #define FU540_BASE_FQY 33330
 
+// 1 GHz normal operation
+#define FU540_1GHZ_FQY 1000000
+
 static void init_coreclk(void)
 {
 	// switch coreclk to input reference frequency before modifying PLL
@@ -163,15 +166,49 @@ int clock_get_coreclk_khz(void)
 	u32 divq = (cfg & PRCI_COREPLLCFG0_DIVQ_MASK)
 		>> PRCI_COREPLLCFG0_DIVQ_SHIFT;
 
-	printk(BIOS_SPEW, "clk: r=%d f=%d q=%d\n", divr, divf, divq);
+	//printk(BIOS_SPEW, "clk: r=%d f=%d q=%d\n", divr, divf, divq);
 	return FU540_BASE_FQY
 		* 2 * (divf + 1)
 		/ (divr + 1)
 		/ (1ul << divq);
 }
 
+#define FU540_UART_DEVICES 2
+#define FU540_UART_REG_DIV 0x18
+#define FU540_UART_DIV_VAL 4
+
+#define FU540_SPI_DIV 0x00
+#define FU540_SPI_DIV_VAL 4
+
+
+void static update_peripheral_clock_dividers(void)
+{
+/*
+	unsigned int i2c_target_khz = 400;
+	uint16_t prescaler = i2c_min_clk_prescaler(peripheral_input_khz, i2c_target_khz);
+	for (size_t i = 0; i < sizeof(i2c_devices) / sizeof(i2c_devices[0]); i++) {
+	_REG32(i2c_devices[i], I2C_PRESCALER_LO) = prescaler & 0xff;
+	_REG32(i2c_devices[i], I2C_PRESCALER_HI) = (prescaler >> 8) & 0xff;
+	}
+*/
+
+	write32((uint32_t *)(FU540_QSPI0 + FU540_SPI_DIV), FU540_SPI_DIV_VAL);
+	write32((uint32_t *)(FU540_QSPI1 + FU540_SPI_DIV), FU540_SPI_DIV_VAL);
+	write32((uint32_t *)(FU540_QSPI2 + FU540_SPI_DIV), FU540_SPI_DIV_VAL);
+
+	for (size_t i = 0; i < FU540_UART_DEVICES; i++) {
+		write32((uint32_t *)(FU540_UART(i) + FU540_UART_REG_DIV), FU540_UART_DIV_VAL);
+	}
+}
+
 void clock_init(void)
 {
+	/*
+	 * Update the peripheral clock dividers of UART, SPI and I2C to safe
+         * values as we can't put them in reset before changing frequency.
+	 */
+	update_peripheral_clock_dividers();
+
 	init_coreclk();
 
 	// put DDR and ethernet in reset
