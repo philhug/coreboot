@@ -21,8 +21,8 @@
 #include <cbfs.h>
 #include <console/console.h>
 #include <northbridge/intel/sandybridge/raminit_native.h>
-#include <device/pci.h>
 #include <device/pci_def.h>
+#include <device/pci_ops.h>
 
 static DEVTREE_CONST u32 ilo0_base = 0x1000;
 static DEVTREE_CONST u32 ilo2_base = 0x1400;
