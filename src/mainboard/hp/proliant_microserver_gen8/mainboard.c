@@ -2,13 +2,13 @@
 #include <drivers/intel/gma/int15.h>
 #include <southbridge/intel/bd82x6x/pch.h>
 
-static void mainboard_init(device_t dev)
+static void mainboard_init(struct device *dev)
 {
 	RCBA32(0x38c8) = 0x00000000;
 	RCBA32(0x38c4) = 0x00000000;
 }
 
-static void mainboard_enable(device_t dev)
+static void mainboard_enable(struct device *dev)
 {
 	dev->ops->init = mainboard_init;
 }

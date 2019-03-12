@@ -15,10 +15,6 @@ chip northbridge/intel/sandybridge # FIXME: check gfx.ndid and gfx.did
 	register "gpu_panel_power_up_delay" = "0"
 	register "gpu_pch_backlight" = "0x00000000"
 	device cpu_cluster 0x0 on
-		chip cpu/intel/socket_rPGA989
-			device lapic 0x0 on
-			end
-		end
 		chip cpu/intel/model_206ax # FIXME: check all registers
 			register "c1_acpower" = "1"
 			register "c1_battery" = "1"
@@ -26,7 +22,7 @@ chip northbridge/intel/sandybridge # FIXME: check gfx.ndid and gfx.did
 			register "c2_battery" = "3"
 			register "c3_acpower" = "5"
 			register "c3_battery" = "5"
-			device lapic 0xacac off
+			device lapic 0x0 on
 			end
 		end
 	end
@@ -51,8 +47,8 @@ chip northbridge/intel/sandybridge # FIXME: check gfx.ndid and gfx.did
 			end
 			device pci 16.3 off # Management Engine KT
 			end
-			device pci 19.0 off # Intel Gigabit Ethernet
-			end
+			#device pci 19.0 off # Intel Gigabit Ethernet
+			#end
 			device pci 1a.0 on # USB2 EHCI #2
 				subsystemid 0x103c 0x330d
 			end
@@ -89,7 +85,7 @@ chip northbridge/intel/sandybridge # FIXME: check gfx.ndid and gfx.did
 			device pci 1f.2 on # SATA Controller 1
 				subsystemid 0x103c 0x330d
 			end
-			device pci 1f.3 off # SMBus
+			device pci 1f.3 on # SMBus
 			end
 			device pci 1f.5 off # SATA Controller 2
 			end
@@ -101,8 +97,8 @@ chip northbridge/intel/sandybridge # FIXME: check gfx.ndid and gfx.did
 		device pci 01.0 on # PCIe Bridge for discrete graphics Unsupported PCI device 8086:0151
 			subsystemid 0x103c 0x330b
 		end
-		device pci 02.0 off # Internal graphics
-		end
+		#device pci 02.0 off # Internal graphics
+		#end
 		device pci 06.0 on # Unsupported PCI device 8086:015d
 			subsystemid 0x103c 0x330b
 		end
