@@ -416,12 +416,14 @@ static void update_mrc_cache_by_type(int type)
 
 	printk(BIOS_DEBUG, "MRC: cache data '%s' needs update.\n", cr->name);
 
+	/*
 	if (region_file_update_data(&cache_file,
 		cbmem_entry_start(to_be_updated),
 		cbmem_entry_size(to_be_updated)) < 0)
 		log_event_cache_update(cr->elog_slot, UPDATE_FAILURE);
 	else
 		log_event_cache_update(cr->elog_slot, UPDATE_SUCCESS);
+	*/
 }
 
 /* Read flash status register to determine if write protect is active */
@@ -518,7 +520,7 @@ static void invalidate_normal_cache(void)
 	struct region_file cache_file;
 	struct region_device rdev;
 	const char *name = DEFAULT_MRC_CACHE;
-	const uint32_t invalid = ~MRC_DATA_SIGNATURE;
+	//const uint32_t invalid = ~MRC_DATA_SIGNATURE;
 
 	/* Invalidate only on recovery mode with retraining enabled. */
 	if (!vboot_recovery_mode_enabled())
@@ -540,8 +542,10 @@ static void invalidate_normal_cache(void)
 
 	/* Push an update that consists of 4 bytes that is smaller than the
 	 * MRC metadata as well as an invalid signature. */
+	/*
 	if (region_file_update_data(&cache_file, &invalid, sizeof(invalid)) < 0)
 		printk(BIOS_ERR, "MRC: invalidation failed for '%s'.\n", name);
+	*/
 }
 
 static void update_mrc_cache(void *unused)
